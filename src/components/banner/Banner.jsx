@@ -8,12 +8,11 @@ const Banner = () => {
     const { data } = useSWR(`https://api.themoviedb.org/3/movie/upcoming?api_key=5b57c96d155886c38c67a9b5bff3e0f6`, fetcher)
 
     const movies = data?.results || []
-    console.log("🚀 ~ file: Banner.jsx:11 ~ Banner ~ movies:", movies)
 
     return (
-        <section className="banner h-[500px] mb-20 overflow-hidden">
+        <section className="banner mb-20 overflow-hidden rounded-lg">
             <Swiper grabCursor={true} slidesPerView={'auto'}>
-                {movies.length > 0 && movies.map(item => (
+                {movies.length > 0 && movies.slice(0,5).map(item => (
                     <SwiperSlide key={item.id}>
                         <BannerItem item={item}></BannerItem>
                     </SwiperSlide>

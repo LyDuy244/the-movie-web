@@ -6,14 +6,17 @@ import useDebounce from '../hooks/useDebounce';
 import ReactPaginate from 'react-paginate';
 import MovieCardSkeleton from '../components/Loading/MovieCardSkeleton';
 import { v4 } from 'uuid';
+import { useParams } from 'react-router-dom';
 
 
 const itemsPerPage = 20
 const MoviePage = () => {
+ 
     // https://api.themoviedb.org/3/search/movie
+    const {movieType} = useParams()
     const [nextPage, setNextPage] = useState(1);
     const [filter, setFilter] = useState('');
-    const [url, setUrl] = useState(tmdbAPI.getMovieList('popular', nextPage));
+    const [url, setUrl] = useState(tmdbAPI.getMovieList(movieType, nextPage));
     const filterDebounce = useDebounce(filter, 1000);
 
     const handleSearchFilterChange = (e) => {
@@ -30,8 +33,8 @@ const MoviePage = () => {
         if (filterDebounce)
             setUrl(tmdbAPI.getMovieSearch(filterDebounce, nextPage))
         else
-            setUrl(tmdbAPI.getMovieList('popular', nextPage))
-    }, [filterDebounce, nextPage])
+            setUrl(tmdbAPI.getMovieList(movieType, nextPage))
+    }, [filterDebounce, movieType, nextPage])
 
 
     const movies = data?.results || []
